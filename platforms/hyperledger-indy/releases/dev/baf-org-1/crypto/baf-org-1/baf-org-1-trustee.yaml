@@ -1,0 +1,32 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: baf-org-1-baf-org-1-trustee
+  annotations:
+    fluxcd.io/automated: "false"
+  namespace: baf-org-1-ns
+spec:
+  releaseName: baf-org-1-baf-org-1-trustee
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-key-mgmt
+    git: https://github.com/surabhi-dudhediya/blockchain-automation-framework.git
+    ref: indy
+  values:
+    metadata:
+      name: baf-org-1-baf-org-1-trustee
+      namespace: baf-org-1-ns
+    network:
+      name: baf
+    image:
+      name: baf-org-1
+      repository: adopblockchaincloud0502.azurecr.io/indy-key-mgmt:1.12.1
+      pullSecret: regcred
+    vault:
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      version: "2"
+      keyPath: baf-org-1.trustees
+      identity: baf-org-1-trustee
+      auth_path: kubernetes-baf-org-1-admin-auth
+    account:
+      service: baf-org-1-admin-vault-auth
+      role: rw
