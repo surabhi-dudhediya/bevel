@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: prov-admin-vault-auth-cluster-admin-role-binding
+  namespace: prov-ns
+  labels:
+    organization: prov
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: prov-admin-vault-auth
+  namespace: prov-ns
