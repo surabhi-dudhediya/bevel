@@ -1,0 +1,35 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: part-part-steward1-auth-job
+  annotations:
+    fluxcd.io/automated: "false"
+  namespace: part-ns
+spec:
+  releaseName: part-part-steward1-auth-job
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-auth-job
+    git: https://github.com/surabhi-dudhediya/blockchain-automation-framework.git
+    ref: indy
+  values:
+    metadata:
+      name: part-part-steward1-auth-job
+      namespace: part-ns
+    network:
+      name: baf
+      kubernetes_url: https://C8FA1454BFC54EBEAC7D6A70501769F2.sk1.eu-west-1.eks.amazonaws.com
+    image:
+      name: part
+      repository: alpine:3.9.4
+    vault:
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      identity: part-steward1
+      admin_auth_path: kubernetes-part-admin-auth
+      policy: part-part-steward1-ro
+      policy_content: path \"/part/data/stewards/part-steward1/*\" { capabilities = [ \"read\", \"list\" ] }
+      auth_path: kubernetes-part-part-steward1-auth
+    account:
+      admin_service: part-admin-vault-auth
+      admin_role: rw
+      service: part-part-steward1-vault-auth
+      role: ro
