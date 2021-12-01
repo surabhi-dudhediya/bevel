@@ -1,0 +1,100 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: baf-org-1-baf-org-1-steward-1-node
+  annotations:
+    fluxcd.io/automated: "false"
+  namespace: baf-org-1-ns
+spec:
+  releaseName: baf-org-1-baf-org-1-steward-1-node
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-node
+    git: https://github.com/surabhi-dudhediya/blockchain-automation-framework.git
+    ref: indy
+  values:
+    metadata:
+      name: baf-org-1-baf-org-1-steward-1-node
+      namespace: baf-org-1-ns
+    network:
+      name: baf
+    organization:
+      name: baf-org-1
+    add_new_org: False
+    image:
+      pullSecret: regcred
+      initContainer:
+        name: baf-org-1-baf-org-1-steward-1-node-init
+        repository: alpine:3.9.4
+      cli:
+        name: baf-org-1-baf-org-1-steward-1-node-ledger-txn
+        repository: adopblockchaincloud0502.azurecr.io/indy-ledger-txn:latest
+        pullSecret: regcred
+      indyNode:
+        name: baf-org-1-baf-org-1-steward-1-node
+        repository: adopblockchaincloud0502.azurecr.io/indy-node:1.12.1
+    node:
+      name: baf-org-1-steward-1
+      ip: 0.0.0.0
+      publicIp: 52.51.240.218
+      port: 15031
+      ambassadorPort: 15031
+    client:
+      publicIp: 52.51.240.218
+      ip: 0.0.0.0
+      port: 15032
+      ambassadorPort: 15032
+    service:
+      type: ClusterIP
+      ports:
+        nodePort: 15031
+        nodeTargetPort: 15031
+        clientPort: 15032
+        clientTargetPort: 15032
+    configmap:
+      indyConfig: |-
+        NETWORK_NAME = 'baf'
+        # Enable stdout logging
+        enableStdOutLogging = True
+        logRotationBackupCount = 10
+        # Directory to store ledger.
+        LEDGER_DIR = '/var/lib/indy/data'
+        # Directory to store logs.
+        LOG_DIR = '/var/log/indy'
+        # Directory to store keys.
+        KEYS_DIR = '/var/lib/indy/keys'
+        # Directory to store genesis transactions files.
+        GENESIS_DIR = '/var/lib/indy/genesis'
+        # Directory to store backups.
+        BACKUP_DIR = '/var/lib/indy/backup'
+        # Directory to store plugins.
+        PLUGINS_DIR = '/var/lib/indy/plugins'
+        # Directory to store node info.
+        NODE_INFO_DIR = '/var/lib/indy/data'
+    ambassador:
+      annotations: |-
+        ---
+        apiVersion: ambassador/v2
+        kind: TCPMapping
+        name: baf-org-1-baf-org-1-steward-1-node-node-mapping
+        port: 15031
+        service: baf-org-1-baf-org-1-steward-1-node.baf-org-1-ns:15031
+        ---
+        apiVersion: ambassador/v2
+        kind: TCPMapping
+        name: baf-org-1-baf-org-1-steward-1-node-client-mapping
+        port: 15032
+        service: baf-org-1-baf-org-1-steward-1-node.baf-org-1-ns:15032
+    vault:
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      serviceAccountName: baf-org-1-baf-org-1-steward-1-vault-auth
+      keyPath: /keys/baf/keys/baf-org-1-steward-1
+      authPath: kubernetes-baf-org-1-baf-org-1-steward-1-auth
+      nodeId: baf-org-1-steward-1
+      role: ro
+    storage:
+      data:
+        storagesize: 3Gi
+        storageClassName: baf-org-1-aws-storageclass
+      keys:
+        storagesize: 3Gi
+        storageClassName: baf-org-1-aws-storageclass
