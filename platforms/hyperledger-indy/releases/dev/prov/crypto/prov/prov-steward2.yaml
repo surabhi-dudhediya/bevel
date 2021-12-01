@@ -1,0 +1,32 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prov-prov-steward2
+  annotations:
+    fluxcd.io/automated: "false"
+  namespace: prov-ns
+spec:
+  releaseName: prov-prov-steward2
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-key-mgmt
+    git: https://github.com/surabhi-dudhediya/blockchain-automation-framework.git
+    ref: indy
+  values:
+    metadata:
+      name: prov-prov-steward2
+      namespace: prov-ns
+    network:
+      name: baf
+    image:
+      name: prov
+      repository: adopblockchaincloud0502.azurecr.io/indy-key-mgmt:1.11.0
+      pullSecret: regcred
+    vault:
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      version: "2"
+      keyPath: prov.stewards
+      identity: prov-steward2
+      auth_path: kubernetes-prov-admin-auth
+    account:
+      service: prov-admin-vault-auth
+      role: rw
