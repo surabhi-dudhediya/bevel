@@ -1,0 +1,26 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: baf-org-1-dtg
+  annotations:
+    fluxcd.io/automated: "false"
+  namespace: baf-org-1-ns
+spec:
+  releaseName: baf-org-1-dtg
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-domain-genesis
+    git: https://github.com/surabhi-dudhediya/blockchain-automation-framework.git
+    ref: indy
+  values:
+    metadata:
+      name: baf-org-1-dtg
+      namespace: baf-org-1-ns
+    organization:
+      name: baf-org-1
+    configmap:
+      domainGenesis: |-
+        {"reqSignature":{},"txn":{"data":{"alias":"baf-org-1-trustee","dest":"Avkda9jKQovDgGoDb9EQHE","role":"0","verkey":"6QofVcK7VFcHwzicv6sq9jBFbSZSgs4HR7FkS5w8kisW"},"metadata":{},"type":"1"},"txnMetadata":{"seqNo":1},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"alias":"baf-org-1-steward-1","dest":"3kyMP9xAm6QhU12SBji4GK","role":"2","verkey":"2WC1yog6WT1ELjv4BhkQYzHm11YHeXVQHWu8VxWa6PDS"},"metadata":{"from":"Avkda9jKQovDgGoDb9EQHE"},"type":"1"},"txnMetadata":{"seqNo":2},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"alias":"baf-org-1-steward-2","dest":"Lf4KcgMidVZVnLkcvWJKMR","role":"2","verkey":"BiNTXjXbtUFHyaoo2N1oBhzD9p2ebHQwDmirCjM3PgvK"},"metadata":{"from":"Avkda9jKQovDgGoDb9EQHE"},"type":"1"},"txnMetadata":{"seqNo":3},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"alias":"baf-org-1-steward-3","dest":"MgAjfq8W4H4xw2Kp7KrR8Z","role":"2","verkey":"CGb4UjkS6c9sWf28G8RErrfqBv25MgkZtqcStvfBNXLN"},"metadata":{"from":"Avkda9jKQovDgGoDb9EQHE"},"type":"1"},"txnMetadata":{"seqNo":4},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"alias":"baf-org-1-steward-4","dest":"AE4BdiY9hByHh9Te2B7SXR","role":"2","verkey":"62d96zrrbSK1JL7moguzmJLLhVv2V6LHiSpvSG6dzwci"},"metadata":{"from":"Avkda9jKQovDgGoDb9EQHE"},"type":"1"},"txnMetadata":{"seqNo":5},"ver":"1"}
