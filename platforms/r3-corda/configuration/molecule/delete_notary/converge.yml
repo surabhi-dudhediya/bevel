@@ -1,3 +1,9 @@
+##############################################################################################
+#  Copyright Accenture. All Rights Reserved.
+#
+#  SPDX-License-Identifier: Apache-2.0
+##############################################################################################
+
 ---
 - name: Converge
   hosts: localhost
@@ -31,11 +37,11 @@
       - service:
         type: doorman
         uri: http://<MINIKUBE_IP_ADDRESS>:30030
-        certificate: /home/blockchain-automation-framework/platforms/r3-corda/configuration/build/corda/doorman/tls/ambassador.crt
+        certificate: /home/bevel/platforms/r3-corda/configuration/build/corda/doorman/tls/ambassador.crt
       - service:
         type: networkmap
         uri: http://<MINIKUBE_IP_ADDRESS>:30040
-        certificate: /home/blockchain-automation-framework/platforms/r3-corda/configuration/build/corda/networkmap/tls/ambassador.crt
+        certificate: /home/bevel/platforms/r3-corda/configuration/build/corda/networkmap/tls/ambassador.crt
     
     kubernetes:
       config_file: "/tmp/molecule/kind-default/kubeconfig"  
@@ -193,7 +199,8 @@
         name: "configuration/roles/delete/vault_secrets"
       vars:
         auth_lists:
-          stdout: "abc"
+          stdout_lines:
+            - "abc"
         vault_policy_result:
           failed: True
         root_certs:

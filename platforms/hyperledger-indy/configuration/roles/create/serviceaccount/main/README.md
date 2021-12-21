@@ -1,3 +1,8 @@
+[//]: # (##############################################################################################)
+[//]: # (Copyright Accenture. All Rights Reserved.)
+[//]: # (SPDX-License-Identifier: Apache-2.0)
+[//]: # (##############################################################################################)
+
 ## create/serviceaccount/main
 This role creates value files of all needed Service Accounts and ClusterRoleBindings of organization.
 
@@ -60,7 +65,7 @@ It calls role *create/serviceaccount/by_identities*.
 
 #### Input Variables:
  - component_namespace: A namespace of organization.
- - component_name: A name of ServiceAccount. By default it is *{{ organization }}-baf-ac-vault-auth*
+ - component_name: A name of ServiceAccount. By default it is *{{ organization }}-bevel-ac-vault-auth*
  - release_dir: Release directory, where are stored generated files for gitops. By default is *{{ playbook_dir }}/../../../{{ gitops.release_dir }}/{{ organization }}*
 
 ### 6. Push the created deployment files to repository
@@ -120,4 +125,4 @@ It calls role *create/serviceaccount/waiting*.
  - organization: A organization name.
 
 #### Input Variables:
- - name: A name of ServiceAccount and ClusterRoleBinding. By default is *{{ organization }}-baf-ac*
+ - name: A name of ServiceAccount and ClusterRoleBinding. By default is *{{ organization }}-bevel-ac*

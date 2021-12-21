@@ -1,3 +1,8 @@
+[//]: # (##############################################################################################)
+[//]: # (Copyright Accenture. All Rights Reserved.)
+[//]: # (SPDX-License-Identifier: Apache-2.0)
+[//]: # (##############################################################################################)
+
 # Supplychain Playbooks
 
 ## Overview
@@ -9,7 +14,7 @@ These playbooks deploys the smart contract in case of Quorum.
 
 To run the playbooks and deploy the APIs, following are the pre-requisites
 1. Ansible and Git are required to be setup on the machine.
-2. The DLT network setup should be complete using the Blockchain Automation Framework, which includes the GitOps setup.
+2. The DLT network setup should be complete using Hyperledger Bevel, which includes the GitOps setup.
 3. A complete input configuration file: *network.yaml* as described in **Step 1**.
 
 ## Playbook Description 

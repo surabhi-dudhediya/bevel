@@ -1,6 +1,12 @@
+##############################################################################################
+#  Copyright Accenture. All Rights Reserved.
+#
+#  SPDX-License-Identifier: Apache-2.0
+##############################################################################################
+
 ---
 #######################################
-# Playbook to setup the environment for running the Blockchain Automation Framework configurations
+# Playbook to setup the environment for running Hyperledger Bevel configurations
 #  - checks and installs kubectl, helm and vault clients
 #  - If cloud platform is AWS, checks and installs aws-cli and aws-authenticator
 #######################################

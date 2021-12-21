@@ -1,3 +1,9 @@
+##############################################################################################
+#  Copyright Accenture. All Rights Reserved.
+#
+#  SPDX-License-Identifier: Apache-2.0
+##############################################################################################
+
 ---
 # This is a sample configuration file for SupplyChain App on Single K8s Cluster.
 # For multiple K8s clusters, there should be multiple configuration files.
@@ -126,11 +132,11 @@ network:
       # Do not check-in git_password
       gitops:
         git_protocol: "https" # Option for git over https or ssh
-        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger/bevel.git"
         branch: "gitops_branch"           # Git branch where release is being made
         release_dir: "gitops_release_dir" # Relative Path in the Git repo for flux sync per environment. 
         chart_source: "gitops_charts"     # Relative Path where the Helm charts are stored in Git repo
-        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger/bevel.git"
         username: "git_username"          # Git Service user who has rights to check-in in all branches
         password: "git_access_token"          # Git Server user password/token (Optional for ssh; Required for https)
         email: "git_email"                # Email to use in git config
@@ -203,11 +209,11 @@ network:
       # Do not check-in git_password
       gitops:
         git_protocol: "https" # Option for git over https or ssh
-        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger/bevel.git"
         branch: "gitops_branch"           # Git branch where release is being made
         release_dir: "gitops_release_dir" # Relative Path in the Git repo for flux sync per environment. 
         chart_source: "gitops_charts"     # Relative Path where the Helm charts are stored in Git repo
-        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger/bevel.git"
         username: "git_username"          # Git Service user who has rights to check-in in all branches
         password: "git_access_token"          # Git Server user password/token (Optional for ssh; Required for https)
         email: "git_email"                # Email to use in git config
@@ -254,7 +260,7 @@ network:
             repository:
               username: "git_username"          # Git Service user who has rights to check-in in all branches
               password: "git_password"
-              url: "github.com/hyperledger-labs/blockchain-automation-framework.git"
+              url: "github.com/hyperledger/bevel.git"
               branch: develop
               path: "chaincode_src"
             arguments: 'chaincode_args'
@@ -298,11 +304,11 @@ network:
       # Do not check-in git_password
       gitops:
         git_protocol: "https" # Option for git over https or ssh
-        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger/bevel.git"
         branch: "gitops_branch"           # Git branch where release is being made
         release_dir: "gitops_release_dir" # Relative Path in the Git repo for flux sync per environment. 
         chart_source: "gitops_charts"     # Relative Path where the Helm charts are stored in Git repo
-        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger/bevel.git"
         username: "git_username"          # Git Service user who has rights to check-in in all branches
         password: "git_access_token"          # Git Server user password/token (Optional for ssh; Required for https)
         email: "git_email"                # Email to use in git config
@@ -347,7 +353,7 @@ network:
             repository:
               username: "git_username"          # Git Service user who has rights to check-in in all branches
               password: "git_password"
-              url: "github.com/hyperledger-labs/blockchain-automation-framework.git"
+              url: "github.com/hyperledger/bevel.git"
               branch: develop
               path: "chaincode_src"
             arguments: 'chaincode_args'
@@ -391,11 +397,11 @@ network:
       # Do not check-in git_password
       gitops:
         git_protocol: "https" # Option for git over https or ssh
-        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger/bevel.git"
         branch: "gitops_branch"           # Git branch where release is being made
         release_dir: "gitops_release_dir" # Relative Path in the Git repo for flux sync per environment. 
         chart_source: "gitops_charts"     # Relative Path where the Helm charts are stored in Git repo
-        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger/bevel.git"
         username: "git_username"          # Git Service user who has rights to check-in in all branches
         password: "git_access_token"          # Git Server user password/token (Optional for ssh; Required for https)
         email: "git_email"                # Email to use in git config
@@ -440,7 +446,7 @@ network:
             repository:
               username: "git_username"          # Git Service user who has rights to check-in in all branches
               password: "git_password"
-              url: "github.com/hyperledger-labs/blockchain-automation-framework.git"
+              url: "github.com/hyperledger/bevel.git"
               branch: develop
               path: "chaincode_src"
             arguments: 'chaincode_args'
@@ -484,11 +490,11 @@ network:
       # Do not check-in git_password
       gitops:
         git_protocol: "https" # Option for git over https or ssh
-        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_url: "gitops_ssh_url"         # Gitops https or ssh url for flux value files like "https://github.com/hyperledger/bevel.git"
         branch: "gitops_branch"           # Git branch where release is being made
         release_dir: "gitops_release_dir" # Relative Path in the Git repo for flux sync per environment. 
         chart_source: "gitops_charts"     # Relative Path where the Helm charts are stored in Git repo
-        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger-labs/blockchain-automation-framework.git"
+        git_repo: "gitops_repo_url"   # Gitops git repository URL for git push like "github.com/hyperledger/bevel.git"
         username: "git_username"          # Git Service user who has rights to check-in in all branches
         password: "git_access_token"          # Git Server user password/token (Optional for ssh; Required for https)
         email: "git_email"                # Email to use in git config
@@ -533,7 +539,7 @@ network:
             repository:
               username: "git_username"          # Git Service user who has rights to check-in in all branches
               password: "git_password"
-              url: "github.com/hyperledger-labs/blockchain-automation-framework.git"
+              url: "github.com/hyperledger/bevel.git"
               branch: develop
               path: "chaincode_src"
             arguments: 'chaincode_args'

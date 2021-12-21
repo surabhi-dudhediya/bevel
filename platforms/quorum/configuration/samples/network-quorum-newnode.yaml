@@ -1,3 +1,9 @@
+##############################################################################################
+#  Copyright Accenture. All Rights Reserved.
+#
+#  SPDX-License-Identifier: Apache-2.0
+##############################################################################################
+
 ---
 # yaml-language-server: $schema=../../../../platforms/network-schema.json
 # This is a sample configuration file for Quorum network which has 4 nodes.
@@ -59,8 +65,8 @@ network:
       - "https://store.test.quorum.blockchaincloudpoc.com"
       - "https://warehouse.test.quorum.blockchaincloudpoc.com"
 
-    staticnodes: "/home/user/blockchain-automation-framework/build/quorum_staticnodes" # Location where staticnodes will be saved
-    genesis: "/home/user/blockchain-automation-framework/build/quorum_genesis"   # Location where genesis file will be saved
+    staticnodes: "/home/user/bevel/build/quorum_staticnodes" # Location where staticnodes will be saved
+    genesis: "/home/user/bevel/build/quorum_genesis"   # Location where genesis file will be saved
     # NOTE when adding a new node, the above files must correspond to the existing network
   
     ##### Following keys are only used when adding new Node(s) to existing network and should NOT be used to create new network.
@@ -100,11 +106,11 @@ network:
       # Do not check-in git_access_token
       gitops:
         git_protocol: "https" # Option for git over https or ssh
-        git_url: "https://github.com/<username>/blockchain-automation-framework.git"         # Gitops https or ssh url for flux value files 
+        git_url: "https://github.com/<username>/bevel.git"         # Gitops https or ssh url for flux value files 
         branch: "develop"           # Git branch where release is being made
         release_dir: "platforms/quorum/releases/dev" # Relative Path in the Git repo for flux sync per environment. 
         chart_source: "platforms/quorum/charts"     # Relative Path where the Helm charts are stored in Git repo
-        git_repo: "github.com/<username>/blockchain-automation-framework.git"   # Gitops git repository URL for git push 
+        git_repo: "github.com/<username>/bevel.git"   # Gitops git repository URL for git push 
         username: "git_username"          # Git Service user who has rights to check-in in all branches
         password: "git_access_token"          # Git Server user password/token (Optional for ssh; Required for https)
         email: "git@email.com"                # Email to use in git config
@@ -115,7 +121,7 @@ network:
         - peer:
           name: neworg
           subject: "O=Neworg,OU=Neworg,L=51.50/-0.13/London,C=GB" # This is the node subject. L=lat/long is mandatory for supplychain sample app
-          type: validator         # value can be validator or non-validator, only applicable if consensus = 'ibft'
+          type: member         # value can be validator or member, only applicable if consensus = 'ibft'
           geth_passphrase: "12345"  # Passphrase to be used to generate geth account
           lock: false        # true or false: Sets Quorum node to lock or unlock mode
           p2p:

@@ -1,4 +1,10 @@
 ##############################################################################################
+#  Copyright Accenture. All Rights Reserved.
+#
+#  SPDX-License-Identifier: Apache-2.0
+##############################################################################################
+
+##############################################################################################
 # This role get vault root token for organization and remove Indy crypto from vault
 ##############################################################################################
 
@@ -86,7 +92,7 @@
       fi
     }
 
-    response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --header "X-Vault-Token: ${vault_token}" --request DELETE {{ vault.url }}/v1/sys/policy/{{ organization }}-baf-ac-ro)
+    response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --header "X-Vault-Token: ${vault_token}" --request DELETE {{ vault.url }}/v1/sys/policy/{{ organization }}-bevel-ac-ro)
     validateVaultResponse ${response_status}
     response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --header "X-Vault-Token: ${vault_token}" --request DELETE {{ vault.url }}/v1/sys/policy/{{ organization }}-admin-rw)
     validateVaultResponse ${response_status}
@@ -106,7 +112,7 @@
     }
     response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --header "X-Vault-Token: ${vault_token}" --request DELETE {{ vault.url }}/v1/sys/auth/{{ auth_path }}-admin-auth)
     validateVaultResponse ${response_status}
-    response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --header "X-Vault-Token: ${vault_token}" --request DELETE {{ vault.url }}/v1/sys/auth/{{ auth_path }}-baf-ac-auth)
+    response_status=$(curl -o /dev/null -s -w "%{http_code}\n" --header "X-Vault-Token: ${vault_token}" --request DELETE {{ vault.url }}/v1/sys/auth/{{ auth_path }}-bevel-ac-auth)
     validateVaultResponse ${response_status}
   when: vault.root_token is defined
 
