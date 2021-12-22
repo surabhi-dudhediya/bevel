@@ -1,0 +1,60 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: surorg-net-ca-tools
+  namespace: surorg-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: surorg-net-ca-tools
+  chart:
+    git: https://github.com/surabhi-dudhediya/bevel.git
+    ref: feature-1770
+    path: platforms/hyperledger-fabric/charts/catools
+  values:
+    metadata:
+      namespace: surorg-net
+      name: ca-tools
+      component_type: orderer
+      org_name: surorg
+      proxy: haproxy
+    replicaCount: 1
+
+    image:
+      repository: hyperledger/fabric-ca-tools
+      tag: 1.2.1
+      pullPolicy: IfNotPresent
+      alpineutils: adopblockchaincloud0502.azurecr.io/alpine-utils:1.0
+      
+    storage:
+      storageclassname: surorgsc
+      storagesize: 512Mi
+    
+    vault:
+      role: vault-role
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      authpath: surfabsurorg-net-auth
+      secretmsp: secretsv2/data/crypto/ordererOrganizations/surorg-net/users/admin/msp
+      secrettls: secretsv2/data/crypto/ordererOrganizations/surorg-net/users/admin/tls
+      secretorderer: secretsv2/data/crypto/ordererOrganizations/surorg-net/orderers
+      secretpeer: secretsv2/data/crypto/ordererOrganizations/surorg-net/peers
+      secretpeerorderertls: secretsv2/data/crypto/ordererOrganizations/surorg-net/orderer/tls
+      secretambassador: secretsv2/data/crypto/ordererOrganizations/surorg-net/ambassador
+      secretcert: secretsv2/data/crypto/ordererOrganizations/surorg-net/ca?ca.surorg-net-cert.pem
+      secretkey: secretsv2/data/crypto/ordererOrganizations/surorg-net/ca?surorg-net-CA.key
+      secretcouchdb: secretsv2/data/credentials/surorg-net/couchdb/surorg
+      secretconfigfile: secretsv2/data/crypto/ordererOrganizations/surorg-net/msp/config
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+    
+    org_data:
+      external_url_suffix: hf.dev2.aws.blockchaincloudpoc-develop.com
+      component_subject: O=Orderer,L=51.50/-0.13/London,C=GB
+      cert_subject: O=Orderer/L=51.50,-0.13,London/C=GB
+      component_country: UK
+      component_state: London
+      component_location: London
+      ca_url: ca.surorg-net:7054
+
+    orderers:
+      name: orderer1-orderer2-orderer3-
