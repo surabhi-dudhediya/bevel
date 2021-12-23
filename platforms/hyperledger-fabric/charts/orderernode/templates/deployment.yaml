@@ -237,6 +237,11 @@ spec:
         - name: certificates
           mountPath: /var/hyperledger/orderer/crypto
           readOnly: true
+        resources:
+          requests:
+            memory: {{ .Values.config.pod.resources.requests}}
+          limits:
+            memory: {{ .Values.config.pod.resources.limits}}
       - name: grpc-web
         image: "ghcr.io/hyperledger-labs/grpc-web:latest"        
         ports:
