@@ -176,3 +176,8 @@ spec:
         - name: anchorpeer-artifacts
           mountPath: /opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
           readOnly: true
+        resources:
+          requests:
+            memory: {{ .Values.config.pod.resources.requests}}
+          limits:
+            memory: {{ .Values.config.pod.resources.limits}}
