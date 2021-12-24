@@ -1,0 +1,33 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: surpar-cacerts-job
+  namespace: surpar-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: surpar-cacerts-job
+  chart:
+    git: https://github.com/surabhi-dudhediya/bevel.git
+    ref: feature-1770
+    path: platforms/hyperledger-fabric/charts/generate_cacerts
+  values:
+    metadata:
+      name: surpar
+      component_name: surpar-net
+      namespace: surpar-net    
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.2
+        alpineutils: adopblockchaincloud0502.azurecr.io/alpine-utils:1.0
+
+    vault:
+      role: vault-role
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      authpath: surfabsurpar-net-auth
+      secretcryptoprefix: secretsv2/data/crypto/peerOrganizations/surpar-net/ca
+      secretcredentialsprefix: secretsv2/data/credentials/surpar-net/ca/surpar
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+      
+    ca:
+      subject: /C=GB/ST=London/L=London/O=Carrier/CN=ca.surpar-net
