@@ -74,7 +74,6 @@ spec:
               endorsers_path={{ $.Values.vault.certsecretprefix }}/data/endorsers
 
               client_public_keys=false client_verif_keys=false client_private_keys=false client_sig_keys=false identity_private_keys=false identity_public_keys=false node_verif_keys=false node_bls_keys=false node_public_keys=false node_sig_keys=false node_private_bls_keys=false node_private_keys=false
-
               COUNTER=1
               while [ ${COUNTER} -lt {{ $.Values.vault.retries }} ]
               do
