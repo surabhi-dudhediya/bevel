@@ -271,6 +271,6 @@ spec:
                     echo "Crypto materials are not stored in vault"
                   fi
                 done
-
+                echo "count - $COUNTER"
                 COUNTER=`expr "$COUNTER" + 1`
               done
