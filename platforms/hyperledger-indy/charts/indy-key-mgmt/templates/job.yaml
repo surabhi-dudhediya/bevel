@@ -260,8 +260,8 @@ spec:
                       node_private_keys=false
                       echo "Node private keys are not present in vault"
                     else
-                      node_private_bls_keys=true
-                      echo "Successfully got node private bls keys"
+                      node_private_keys=true
+                      echo "Successfully got node private keys"
                     fi
                   fi
 
