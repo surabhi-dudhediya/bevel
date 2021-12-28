@@ -78,14 +78,3 @@ orderer:
 
 #Provide the base64 encoded file contents for anchorstx
 anchorstx: 
-
-config:
-  # Set memory limits of pod  
-  pod:  
-    resources:
-      # Provide the limit memory for node
-      # Eg. limits: 512M
-      limits: 512M
-      # Provide the requests memory for node
-      # Eg. requests: 550M
-      requests: 512M
