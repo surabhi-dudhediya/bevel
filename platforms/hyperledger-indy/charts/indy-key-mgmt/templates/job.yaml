@@ -272,7 +272,7 @@ spec:
                     echo "Crypto materials are not stored in vault"
                     if [ "$COUNTER" -ge {{ $.Values.vault.retries }} ]
                     then
-                      echo "Retry attempted $COUNTER times, certificates have not been saved"
+                      echo "Retry attempted $COUNTER times, certificates have not been saved in vault"
                       exit 1
                     fi
                   fi
