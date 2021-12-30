@@ -1,0 +1,45 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: surorg-net-ca
+  namespace: surorg-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: surorg-net-ca
+  chart:
+    git: https://github.com/surabhi-dudhediya/bevel.git
+    ref: feature-1770
+    path: platforms/hyperledger-fabric/charts/ca    
+  values:
+    metadata:
+      namespace: surorg-net
+      images:
+        alpineutils: adopblockchaincloud0502.azurecr.io/alpine-utils:1.0
+        ca: hyperledger/fabric-ca:1.4.8
+    server:
+      name: ca
+      tlsstatus: true
+      admin: surorg-admin
+        
+    storage:
+      storageclassname: surorgsc
+      storagesize: 512Mi 
+    vault:
+      role: vault-role
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      authpath: surfabsurorg-net-auth
+      secretcert: secretsv2/data/crypto/ordererOrganizations/surorg-net/ca?ca.surorg-net-cert.pem
+      secretkey: secretsv2/data/crypto/ordererOrganizations/surorg-net/ca?surorg-net-CA.key
+      secretadminpass: secretsv2/data/credentials/surorg-net/ca/surorg?user
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+    service:
+      servicetype: ClusterIP
+      ports:
+        tcp:
+          port: 7054
+    proxy:
+      provider: haproxy
+      type: orderer
+      external_url_suffix: hf.dev2.aws.blockchaincloudpoc-develop.com
