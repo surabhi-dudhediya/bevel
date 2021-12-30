@@ -231,9 +231,11 @@ spec:
           readOnly: true
         resources:
           requests:
-            memory: {{ .Values.config.pod.resources.requests}}
+            memory: {{ .Values.config.pod.resources.requests.memory }}
+            cpu: {{ .Values.config.pod.resources.requests.cpu }}
           limits:
-            memory: {{ .Values.config.pod.resources.limits}}
+            memory: {{ .Values.config.pod.resources.limits.memory }}
+            cpu: {{ .Values.config.pod.resources.limits.cpu }}
       - name: grpc-web
         image: "ghcr.io/hyperledger-labs/grpc-web:latest"        
         ports:
