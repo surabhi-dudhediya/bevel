@@ -1,0 +1,33 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: surorg-cacerts-job
+  namespace: surorg-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: surorg-cacerts-job
+  chart:
+    git: https://github.com/surabhi-dudhediya/bevel.git
+    ref: feature-1770
+    path: platforms/hyperledger-fabric/charts/generate_cacerts
+  values:
+    metadata:
+      name: surorg
+      component_name: surorg-net
+      namespace: surorg-net    
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.2
+        alpineutils: adopblockchaincloud0502.azurecr.io/alpine-utils:1.0
+
+    vault:
+      role: vault-role
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      authpath: surfabsurorg-net-auth
+      secretcryptoprefix: secretsv2/data/crypto/ordererOrganizations/surorg-net/ca
+      secretcredentialsprefix: secretsv2/data/credentials/surorg-net/ca/surorg
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+      
+    ca:
+      subject: /C=GB/ST=London/L=London/O=Orderer/CN=ca.surorg-net
