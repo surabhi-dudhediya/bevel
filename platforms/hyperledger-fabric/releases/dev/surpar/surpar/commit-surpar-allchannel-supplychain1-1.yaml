@@ -1,0 +1,49 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: commit-surpar-allchannel-supplychain1-1
+  namespace: surpar-net
+  annotations:
+    fluxcd.io/automated: "false"
+spec:
+  releaseName: commit-surpar-allchannel-supplychain1-1
+  chart:
+    git: https://github.com/surabhi-dudhediya/bevel.git
+    ref: feature-1770
+    path: platforms/hyperledger-fabric/charts/commit_chaincode
+  values:
+    metadata:
+      namespace: surpar-net
+      images:
+        fabrictools: hyperledger/fabric-tools:2.2.2
+        alpineutils: adopblockchaincloud0502.azurecr.io/alpine-utils:1.0
+    peer:
+      name: peer0
+      address: peer0.surpar-net:7051
+      localmspid: surparMSP
+      loglevel: debug
+      tlsstatus: true
+    vault:
+      role: vault-role
+      address: http://vault.internal.dev2.aws.blockchaincloudpoc-develop.com:20001
+      authpath: surfabsurpar-net-auth
+      adminsecretprefix: secretsv2/data/crypto/peerOrganizations/surpar-net/users/admin
+      orderersecretprefix: secretsv2/data/crypto/peerOrganizations/surpar-net/orderer
+      serviceaccountname: vault-auth
+      imagesecretname: regcred
+      tls: false
+    orderer:
+      address: orderer91.hf.dev2.aws.blockchaincloudpoc-develop.com:8443
+    chaincode:
+      builder: hyperledger/fabric-ccenv:2.2.2
+      name: supplychain
+      version: 1
+      sequence: 1
+      commitarguments: '\"init\",\"\"'
+      endorsementpolicies:  ''
+    channel:
+      name: allchannel
+    endorsers:
+      creator: surpar-net
+      name:  surpar  
+      corepeeraddress:  peer0.surpar-net.hf.dev2.aws.blockchaincloudpoc-develop.com:8443 
