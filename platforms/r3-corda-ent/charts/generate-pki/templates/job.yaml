@@ -530,7 +530,9 @@ spec:
 
                   # get root certs from vault
                   LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/root/certs | jq -r 'if .errors then . else . end')
+                  echo "LOOKUP_SECRET_RESPONSE - $LOOKUP_SECRET_RESPONSE"
                   CORDA_SSL_AUTH_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-auth-keys.jks" ]' 2>&1)
+                  echo "CORDA_SSL_AUTH_KEYS - $CORDA_SSL_AUTH_KEYS"
                   CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
                   CORDA_SSL_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-trust-store.jks" ]' 2>&1)
                   NETWORK_ROOT_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-root-truststore.jks" ]' 2>&1)
@@ -548,11 +550,6 @@ spec:
                       exit 1
                     fi
                   fi
-                  # break;
-                # else
-                #   echo "certificates are not ready, sleeping ..."
-                #   sleep {{ $.Values.vault.sleepTimeAfterError }}
-                  COUNTER=`expr "$COUNTER" + 1`
                 fi
             done
             cd ${BASE_DIR}/DATA
