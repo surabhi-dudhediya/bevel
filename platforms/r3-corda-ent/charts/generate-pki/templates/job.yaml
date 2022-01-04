@@ -507,6 +507,7 @@ spec:
             COUNTER=1
             while [ "$COUNTER" -lt {{ $.Values.vault.retries }} ]
             do
+            echo "COUNTER - $COUNTER"
                 if [ -e done.txt ]
                 then
                   cd ${BASE_DIR}/DATA/root
@@ -550,6 +551,8 @@ spec:
                       exit 1
                     fi
                   fi
+                  break
+                  COUNTER=`expr "$COUNTER" + 1`
                 fi
             done
             cd ${BASE_DIR}/DATA
@@ -595,6 +598,7 @@ spec:
                       exit 1
                     fi
                   fi
+                  break
                   COUNTER=`expr "$COUNTER" + 1`
                 fi
             done
@@ -654,6 +658,7 @@ spec:
                       exit 1
                     fi
                   fi
+                  break
                   COUNTER=`expr "$COUNTER" + 1`
                 fi
             done
