@@ -533,7 +533,7 @@ spec:
                   echo "LOOKUP_SECRET_RESPONSE - $LOOKUP_SECRET_RESPONSE"
                   CORDA_SSL_AUTH_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-auth-keys.jks" ]' 2>&1)
                   echo "CORDA_SSL_AUTH_KEYS - $CORDA_SSL_AUTH_KEYS"
-                  CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
+                  # CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
                   CORDA_SSL_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-trust-store.jks" ]' 2>&1)
                   NETWORK_ROOT_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-root-truststore.jks" ]' 2>&1)
                   ROOT_KEY_STORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root-key-store.jks" ]' 2>&1)
@@ -580,6 +580,7 @@ spec:
 
                   # get signer certs from vault
                   LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.signerName }}/certs | jq -r 'if .errors then . else . end')
+                  echo "signer ccerts - $LOOKUP_SECRET_RESPONSE"
                   CORDA_SSL_SIGNER_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-signer-keys.jks" ]' 2>&1)
                   IDM_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "identity-manager-key-store.jks" ]' 2>&1)
                   NMAP_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-map-key-store.jks" ]' 2>&1)
@@ -629,6 +630,7 @@ spec:
 
                   # get idman crls from vault
                   LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.idmanName }}/crls | jq -r 'if .errors then . else . end')
+                  echo "idman - $LOOKUP_SECRET_RESPONSE"
                   ROOL_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root.crl" ]' 2>&1)
                   SSL_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "ssl.crl" ]' 2>&1)
                   SUBORDINATE_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate.crl" ]' 2>&1)
