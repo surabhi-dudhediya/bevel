@@ -615,6 +615,45 @@ spec:
           - name: pkitool-certs-keys
             mountPath: {{ .Values.volume.baseDir }}/DATA
             readOnly: false
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            # tcpSocket:
+            #   port: {{ .Values.service.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                  KUBE_SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+                  VAULT_TOKEN=$(curl -sS --request POST ${VAULT_ADDR}/v1/auth/${KUBERNETES_AUTH_PATH}/login -H "Content-Type: application/json" -d '{"role":"'"${VAULT_APP_ROLE}"'","jwt":"'"${KUBE_SA_TOKEN}"'"}' | jq -r 'if .errors then . else .auth.client_token end')
+                  validateVaultResponse 'vault login token' "${VAULT_TOKEN}"
+                  LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/root/certs | jq -r 'if .errors then . else . end')
+                  echo "LOOKUP_SECRET_RESPONSE - $LOOKUP_SECRET_RESPONSE"
+                  CORDA_SSL_AUTH_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-auth-keys.jks" ]' 2>&1)
+                  echo "CORDA_SSL_AUTH_KEYS - $CORDA_SSL_AUTH_KEYS"
+                  # CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
+                  CORDA_SSL_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-trust-store.jks" ]' 2>&1)
+                  NETWORK_ROOT_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-root-truststore.jks" ]' 2>&1)
+                  ROOT_KEY_STORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root-key-store.jks" ]' 2>&1)
+                  SUBORDINATE_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate-key-store.jks" ]' 2>&1)
+                  TLSCRL_SIGNER_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "tls-crl-signer-key-store.jks" ]' 2>&1)
+                  if [ "$CORDA_SSL_AUTH_KEYS" == "null" ] || [ "$CORDA_SSL_ROOT_KEYS" == "null" ] || [ "$CORDA_SSL_TRUSTSTORE" == "null" ] || [ "$NETWORK_ROOT_TRUSTSTORE" == "null" ] || [ "$ROOT_KEY_STORE" == "null" ] || [ "$SUBORDINATE_KEYSTORE" == "null" ] || [ "$TLSCRL_SIGNER_KEYSTORE" == "null" ] || [[ "$CORDA_SSL_AUTH_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_ROOT_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_TRUSTSTORE" == "parse error"* ]] || [[ "$NETWORK_ROOT_TRUSTSTORE" == "parse error"* ]] || [[ "$ROOT_KEY_STORE" == "parse error"* ]] || [[ "$SUBORDINATE_KEYSTORE" == "parse error"* ]] || [[ "$TLSCRL_SIGNER_KEYSTORE" == "parse error"* ]]
+                  then
+                    echo "certificates write or read fail"
+                    sleep {{ $.Values.vault.sleepTimeAfterError  }}
+                    # if [ "$COUNTER" -ge {{ $.Values.vault.retries }} ]
+                    # then
+                    #   echo "Retry attempted $COUNTER times, certificates have not been saved"
+                    #   exit 1
+                    # fi
+                  fi 
+                
+          {{- end  }}
         imagePullSecrets:
           - name: {{ .Values.image.imagePullSecret }}
         volumes:

@@ -136,4 +136,12 @@ volume:
 cordaJarMx: 
 # Provide the path where the CENM Service configuration files are stored
 # Eg. configPath: etc
-configPath: 
+configPath:
+
+readinessProbe:
+  enabled: true
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
