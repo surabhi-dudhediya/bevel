@@ -617,8 +617,6 @@ spec:
             readOnly: false
           {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
-            # tcpSocket:
-            #   port: {{ .Values.service.port }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
