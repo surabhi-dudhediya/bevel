@@ -616,7 +616,7 @@ spec:
             mountPath: {{ .Values.volume.baseDir }}/DATA
             readOnly: false
           {{- if .Values.readinessProbe.enabled }}
-          livelinessProbe:
+          livenessProbe:
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
