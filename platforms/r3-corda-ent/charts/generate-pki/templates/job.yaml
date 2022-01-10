@@ -627,7 +627,6 @@ spec:
               - sh
               - -c
               - |
-                 
                   # get root certs from vault
                   LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/root/certs | jq -r 'if .errors then . else . end')
                   echo "LOOKUP_SECRET_RESPONSE - $LOOKUP_SECRET_RESPONSE"
