@@ -646,8 +646,8 @@ spec:
                   then
                     echo "certificates write or read fail"
                     sleep {{ $.Values.vault.sleepTimeAfterError  }}
-                      echo "Retry attempted $COUNTER times, certificates have not been saved"
-                      exit 1
+                    echo "Retry attempted $COUNTER times, certificates have not been saved"
+                    exit 1
                   fi
           {{- end  }}
         imagePullSecrets:
