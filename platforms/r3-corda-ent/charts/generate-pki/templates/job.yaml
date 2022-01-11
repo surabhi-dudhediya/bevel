@@ -645,8 +645,6 @@ spec:
                   if [ "$CORDA_SSL_AUTH_KEYS" == "null" ] || [ "$CORDA_SSL_ROOT_KEYS" == "null" ] || [ "$CORDA_SSL_TRUSTSTORE" == "null" ] || [ "$NETWORK_ROOT_TRUSTSTORE" == "null" ] || [ "$ROOT_KEY_STORE" == "null" ] || [ "$SUBORDINATE_KEYSTORE" == "null" ] || [ "$TLSCRL_SIGNER_KEYSTORE" == "null" ] || [[ "$CORDA_SSL_AUTH_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_ROOT_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_TRUSTSTORE" == "parse error"* ]] || [[ "$NETWORK_ROOT_TRUSTSTORE" == "parse error"* ]] || [[ "$ROOT_KEY_STORE" == "parse error"* ]] || [[ "$SUBORDINATE_KEYSTORE" == "parse error"* ]] || [[ "$TLSCRL_SIGNER_KEYSTORE" == "parse error"* ]]
                   then
                     echo "certificates write or read fail"
-                    sleep {{ $.Values.vault.sleepTimeAfterError  }}
-                    echo "Retry attempted $COUNTER times, certificates have not been saved"
                     exit 1
                   fi
           {{- end  }}
