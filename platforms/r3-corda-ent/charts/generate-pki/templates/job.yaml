@@ -539,11 +539,9 @@ spec:
                 TLSCRL_SIGNER_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "tls-crl-signer-key-store.jks" ]' 2>&1)
 
                 root_certs=("$CORDA_SSL_AUTH_KEYS" "$CORDA_SSL_ROOT_KEYS" "$CORDA_SSL_TRUSTSTORE" "$NETWORK_ROOT_TRUSTSTORE" "$ROOT_KEY_STORE" "$SUBORDINATE_KEYSTORE" "$TLSCRL_SIGNER_KEYSTORE")
-
                 for field in "${root_certs[@]}"
                 do
-                echo "inside for - $field"
-                  if [ "$field" == "null" ]  || [[ "$field" == "parse error"* ]] || [[ "$field" == "" ]]
+                  if [ "$field" == "null" ]  || [[ "$field" == "parse error"* ]] || [ "$field" == "" ]
                   then
                     echo "certificates write or read fail"
                     sleep {{ $.Values.vault.sleepTimeAfterError  }}
