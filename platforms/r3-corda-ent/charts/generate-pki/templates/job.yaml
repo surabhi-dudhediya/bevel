@@ -533,7 +533,7 @@ spec:
                 echo "LOOKUP_SECRET_RESPONSE - $LOOKUP_SECRET_RESPONSE"
                 CORDA_SSL_AUTH_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-auth-keys.jks" ]' 2>&1)
                 echo "CORDA_SSL_AUTH_KEYS - $CORDA_SSL_AUTH_KEYS"
-                # CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
+                CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
                 CORDA_SSL_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-trust-store.jks" ]' 2>&1)
                 NETWORK_ROOT_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-root-truststore.jks" ]' 2>&1)
                 ROOT_KEY_STORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root-key-store.jks" ]' 2>&1)
