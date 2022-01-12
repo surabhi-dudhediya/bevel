@@ -188,4 +188,4 @@ healthcheck:
   readinesscheckinterval: 5
   #Provide the threshold number of retries
   #Eg. readinessthreshold: 2
-  readinessthreshold:
+  readinessthreshold: 2
