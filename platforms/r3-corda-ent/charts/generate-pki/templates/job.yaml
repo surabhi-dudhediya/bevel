@@ -642,11 +642,16 @@ spec:
                   SUBORDINATE_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate-key-store.jks" ]' 2>&1)
                   TLSCRL_SIGNER_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "tls-crl-signer-key-store.jks" ]' 2>&1)               
 
-                  if [ "$CORDA_SSL_AUTH_KEYS" == "null" ] || [ "$CORDA_SSL_ROOT_KEYS" == "null" ] || [ "$CORDA_SSL_TRUSTSTORE" == "null" ] || [ "$NETWORK_ROOT_TRUSTSTORE" == "null" ] || [ "$ROOT_KEY_STORE" == "null" ] || [ "$SUBORDINATE_KEYSTORE" == "null" ] || [ "$TLSCRL_SIGNER_KEYSTORE" == "null" ] || [[ "$CORDA_SSL_AUTH_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_ROOT_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_TRUSTSTORE" == "parse error"* ]] || [[ "$NETWORK_ROOT_TRUSTSTORE" == "parse error"* ]] || [[ "$ROOT_KEY_STORE" == "parse error"* ]] || [[ "$SUBORDINATE_KEYSTORE" == "parse error"* ]] || [[ "$TLSCRL_SIGNER_KEYSTORE" == "parse error"* ]]
-                  then
-                    echo "certificates write or read fail"
-                    exit 1
-                  fi
+                  tls_certs_fields = ("$CORDA_SSL_AUTH_KEYS" "$CORDA_SSL_TRUSTSTORE" "$NETWORK_ROOT_TRUSTSTORE" "$ROOT_KEY_STORE" "$SUBORDINATE_KEYSTORE" "$TLSCRL_SIGNER_KEYSTORE")
+
+                  for field in "${tls_certs_fields[@]}"
+                  do
+                    echo "inside for..."
+                    if [ "$field" = "null"  ] || [[ "$field" = "parse error"* ]] || [ "$field" = "" ]
+                    then
+                      echo "certificates write or read fail"
+                      exit 1
+                    fi
           {{- end  }}
         imagePullSecrets:
           - name: {{ .Values.image.imagePullSecret }}
