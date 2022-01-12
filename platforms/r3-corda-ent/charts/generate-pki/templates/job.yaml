@@ -530,9 +530,7 @@ spec:
 
                 # get root certs from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/root/certs | jq -r 'if .errors then . else . end')
-                echo "LOOKUP_SECRET_RESPONSE - $LOOKUP_SECRET_RESPONSE"
                 CORDA_SSL_AUTH_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-auth-keys.jks" ]' 2>&1)
-                echo "CORDA_SSL_AUTH_KEYS - $CORDA_SSL_AUTH_KEYS"
                 CORDA_SSL_ROOT_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-root-keys.jks" ]' 2>&1)
                 CORDA_SSL_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-trust-store.jks" ]' 2>&1)
                 NETWORK_ROOT_TRUSTSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-root-truststore.jks" ]' 2>&1)
@@ -540,16 +538,22 @@ spec:
                 SUBORDINATE_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate-key-store.jks" ]' 2>&1)
                 TLSCRL_SIGNER_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "tls-crl-signer-key-store.jks" ]' 2>&1)
 
-                if [ "$CORDA_SSL_AUTH_KEYS" == "null" ] || [ "$CORDA_SSL_ROOT_KEYS" == "null" ] || [ "$CORDA_SSL_TRUSTSTORE" == "null" ] || [ "$NETWORK_ROOT_TRUSTSTORE" == "null" ] || [ "$ROOT_KEY_STORE" == "null" ] || [ "$SUBORDINATE_KEYSTORE" == "null" ] || [ "$TLSCRL_SIGNER_KEYSTORE" == "null" ] || [[ "$CORDA_SSL_AUTH_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_ROOT_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_TRUSTSTORE" == "parse error"* ]] || [[ "$NETWORK_ROOT_TRUSTSTORE" == "parse error"* ]] || [[ "$ROOT_KEY_STORE" == "parse error"* ]] || [[ "$SUBORDINATE_KEYSTORE" == "parse error"* ]] || [[ "$TLSCRL_SIGNER_KEYSTORE" == "parse error"* ]]
-                then
-                  echo "certificates write or read fail"
-                  sleep {{ $.Values.vault.sleepTimeAfterError  }}
-                  if [ "$COUNTER" -ge {{ $.Values.vault.retries }} ]
+                root_certs=("$CORDA_SSL_AUTH_KEYS" "$CORDA_SSL_ROOT_KEYS" "$CORDA_SSL_TRUSTSTORE" "$NETWORK_ROOT_TRUSTSTORE" "$ROOT_KEY_STORE" "$SUBORDINATE_KEYSTORE" "$TLSCRL_SIGNER_KEYSTORE")
+
+                for field in "${root_certs[@]}"
+                do
+                echo "inside for - $field"
+                  if [ "$field" == "null" ]  || [[ "$field" == "parse error"* ]] || [[ "$field" == "" ]]
                   then
-                    echo "Retry attempted $COUNTER times, certificates have not been saved"
-                    exit 1
+                    echo "certificates write or read fail"
+                    sleep {{ $.Values.vault.sleepTimeAfterError  }}
+                    if [ "$COUNTER" -ge {{ $.Values.vault.retries }} ]
+                    then
+                      echo "Retry attempted $COUNTER times, certificates have not been saved"
+                      exit 1
+                    fi
                   fi
-                fi
+                done
                 break
                 COUNTER=`expr "$COUNTER" + 1`
               fi
@@ -581,7 +585,6 @@ spec:
                 echo "after curl"
                 # get signer certs from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.signerName }}/certs | jq -r 'if .errors then . else . end')
-                echo "signer ccerts - $LOOKUP_SECRET_RESPONSE"
                 CORDA_SSL_SIGNER_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-signer-keys.jks" ]' 2>&1)
                 IDM_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "identity-manager-key-store.jks" ]' 2>&1)
                 NMAP_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "network-map-key-store.jks" ]' 2>&1)
@@ -631,7 +634,6 @@ spec:
                 (echo '{"data": {"corda-ssl-network-map-keys.jks": "'; base64 ${BASE_DIR}/DATA/networkmap/corda-ssl-network-map-keys.jks; echo '"}}') | curl -H "X-Vault-Token: ${VAULT_TOKEN}" -d @- ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.networkmapName }}/certs
                  # get idman crls from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.idmanName }}/crls | jq -r 'if .errors then . else . end')
-                echo "idman - $LOOKUP_SECRET_RESPONSE"
                 ROOT_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root.crl" ]' 2>&1)
                 SSL_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "ssl.crl" ]' 2>&1)
                 SUBORDINATE_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate.crl" ]' 2>&1)
