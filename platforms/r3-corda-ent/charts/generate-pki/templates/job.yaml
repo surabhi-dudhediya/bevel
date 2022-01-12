@@ -538,20 +538,16 @@ spec:
                 SUBORDINATE_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate-key-store.jks" ]' 2>&1)
                 TLSCRL_SIGNER_KEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "tls-crl-signer-key-store.jks" ]' 2>&1)
 
-                root_certs=("$CORDA_SSL_AUTH_KEYS" "$CORDA_SSL_ROOT_KEYS" "$CORDA_SSL_TRUSTSTORE" "$NETWORK_ROOT_TRUSTSTORE" "$ROOT_KEY_STORE" "$SUBORDINATE_KEYSTORE" "$TLSCRL_SIGNER_KEYSTORE")
-                for field in "${root_certs[@]}"
-                do
-                  if [ "$field" == "null" ]  || [[ "$field" == "parse error"* ]] || [ "$field" == "" ]
+                if [ "$CORDA_SSL_AUTH_KEYS" == "null" ] || [ "$CORDA_SSL_ROOT_KEYS" == "null" ] || [ "$CORDA_SSL_TRUSTSTORE" == "null" ] || [ "$NETWORK_ROOT_TRUSTSTORE" == "null" ] || [ "$ROOT_KEY_STORE" == "null" ] || [ "$SUBORDINATE_KEYSTORE" == "null" ] || [ "$TLSCRL_SIGNER_KEYSTORE" == "null" ] || [[ "$CORDA_SSL_AUTH_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_ROOT_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_TRUSTSTORE" == "parse error"* ]] || [[ "$NETWORK_ROOT_TRUSTSTORE" == "parse error"* ]] || [[ "$ROOT_KEY_STORE" == "parse error"* ]] || [[ "$SUBORDINATE_KEYSTORE" == "parse error"* ]] || [[ "$TLSCRL_SIGNER_KEYSTORE" == "parse error"* ]]
+                then
+                  echo "certificates write or read fail"
+                  sleep {{ $.Values.vault.sleepTimeAfterError  }}
+                  if [ "$COUNTER" -ge {{ $.Values.vault.retries }} ]
                   then
-                    echo "certificates write or read fail"
-                    sleep {{ $.Values.vault.sleepTimeAfterError  }}
-                    if [ "$COUNTER" -ge {{ $.Values.vault.retries }} ]
-                    then
-                      echo "Retry attempted $COUNTER times, certificates have not been saved"
-                      exit 1
-                    fi
+                    echo "Retry attempted $COUNTER times, certificates have not been saved"
+                    exit 1
                   fi
-                done
+                fi
                 break
                 COUNTER=`expr "$COUNTER" + 1`
               fi
