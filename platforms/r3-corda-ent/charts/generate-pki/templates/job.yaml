@@ -632,7 +632,7 @@ spec:
                  # get idman crls from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.idmanName }}/crls | jq -r 'if .errors then . else . end')
                 echo "idman - $LOOKUP_SECRET_RESPONSE"
-                ROOL_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root.crl" ]' 2>&1)
+                ROOT_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "root.crl" ]' 2>&1)
                 SSL_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "ssl.crl" ]' 2>&1)
                 SUBORDINATE_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "subordinate.crl" ]' 2>&1)
                 TLS_CRL=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "tls.crl" ]' 2>&1)
@@ -640,11 +640,11 @@ spec:
                 # get idman certs from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.idmanName }}/certs | jq -r 'if .errors then . else . end')
                 CORDA_SSL_IDM_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-identity-manager-keys.jks" ]' 2>&1)
-                 # get nmap certs from vault
+                # get nmap certs from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.cenmServices.networkmapName }}/certs | jq -r 'if .errors then . else . end')
                 CORDA_SSL_NMAP_KEYS=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "corda-ssl-network-map-keys.jks" ]' 2>&1)
                 
-                if [ "$ROOL_CRL" == "null" ] || [ "$SSL_CRL" == "null" ] || [ "$SUBORDINATE_CRL" == "null" ] || [ "$TLS_CRL" == "null" ] || [ "$CORDA_SSL_IDM_KEYS" == "null" ] || [ "$CORDA_SSL_NMAP_KEYS" == "null" ] || [[ "$ROOL_CRL" == "parse error"* ]] || [[ "$SSL_CRL" == "parse error"* ]] || [[ "$SUBORDINATE_CRL" == "parse error"* ]] || [[ "$TLS_CRL" == "parse error"* ]] || [[ "$CORDA_SSL_IDM_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_NMAP_KEYS" == "parse error"* ]]
+                if [ "$ROOT_CRL" == "null" ] || [ "$SSL_CRL" == "null" ] || [ "$SUBORDINATE_CRL" == "null" ] || [ "$TLS_CRL" == "null" ] || [ "$CORDA_SSL_IDM_KEYS" == "null" ] || [ "$CORDA_SSL_NMAP_KEYS" == "null" ] || [[ "$ROOT_CRL" == "parse error"* ]] || [[ "$SSL_CRL" == "parse error"* ]] || [[ "$SUBORDINATE_CRL" == "parse error"* ]] || [[ "$TLS_CRL" == "parse error"* ]] || [[ "$CORDA_SSL_IDM_KEYS" == "parse error"* ]] || [[ "$CORDA_SSL_NMAP_KEYS" == "parse error"* ]]
                 then
                   echo "certificates write or read fail"
                   sleep {{ $.Values.vault.sleepTimeAfterError  }}
