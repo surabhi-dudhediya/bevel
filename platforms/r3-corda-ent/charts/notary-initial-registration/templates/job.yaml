@@ -356,6 +356,7 @@ spec:
                 # get nodekeystore.jks from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.nodePath }}/certs/nodekeystore | jq -r 'if .errors then . else . end')
                 TLS_NODEKEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "nodekeystore.jks" ]' 2>&1)
+                echo "TLS_NODEKEYSTORE - $TLS_NODEKEYSTORE"
                 # get sslkeystore.jks from vault
                 LOOKUP_SECRET_RESPONSE=$(curl -sS --header "X-Vault-Token: ${VAULT_TOKEN}" ${VAULT_ADDR}/v1/${CERTS_SECRET_PREFIX}/{{ $.Values.nodePath }}/certs/sslkeystore | jq -r 'if .errors then . else . end')
                 TLS_SSLKEYSTORE=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data[ "sslkeystore.jks" ]' 2>&1)
