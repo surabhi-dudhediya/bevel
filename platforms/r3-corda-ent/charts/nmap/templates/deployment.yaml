@@ -112,6 +112,7 @@ spec:
                 validateVaultResponse "${CERTS_SECRET_PREFIX}/${notary}/nodeInfo" "${LOOKUP_SECRET_RESPONSE}" "LOOKUPSECRETRESPONSE"
                 notary_nodeinfo=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data["nodeInfoFile"]')
                 notary_nodeinfo_name=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data["nodeInfoName"]')
+                echo "notary_nodeinfo_name - $notary_nodeinfo_name"
                 validating=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r '.data.data["validating"]')
                 echo "${notary_nodeinfo}" | base64 -d > ${NODEINFO_MOUNT_PATH}/${notary_nodeinfo_name}
                 echo "Successfully got node info file"
