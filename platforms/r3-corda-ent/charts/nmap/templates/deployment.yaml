@@ -367,6 +367,7 @@ spec:
                 done
             fi
             ROOTCA_TRUSTSTORE=$(cat {{ .Values.config.volume.baseDir }}/DATA/truststore/rootcats)
+            echo "ROOTCA_TRUSTSTORE - $ROOTCA_TRUSTSTORE"
             echo "Waiting for notary-nodeinfo/network-parameters-initial.conf ... done."
             ls -al notary-nodeinfo/network-parameters-initial.conf
             cp notary-nodeinfo/network-parameters-initial.conf {{ .Values.config.configPath }}/
