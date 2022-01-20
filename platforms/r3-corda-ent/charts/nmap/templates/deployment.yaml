@@ -372,6 +372,8 @@ spec:
             ls -al notary-nodeinfo/network-parameters-initial.conf
             cp notary-nodeinfo/network-parameters-initial.conf {{ .Values.config.configPath }}/
 
+            echo "conf - $nmap.conf"
+            echo "para - notary-nodeinfo/network-parameters-initial.conf"
             echo "Setting initial network parameters ..."
             java -jar {{ .Values.config.jarPath }}/networkmap.jar \
               -f {{ .Values.config.configPath }}/nmap.conf \
