@@ -354,6 +354,7 @@ spec:
           export SSL_TRUSTSTORE=$(cat {{ .Values.config.volume.baseDir }}/DATA/truststore/sslts)
           sed -i -e "s*SSL_TRUSTSTORE*${SSL_TRUSTSTORE}*g" etc/nmap.conf
           
+          nmap=$(cat etc/nmap.conf)
           if [ ! -f {{ .Values.config.configPath }}/network-parameters-initial-set-succesfully ]
           then
             echo "Setting network parameters for deployment..."
@@ -372,8 +373,9 @@ spec:
             ls -al notary-nodeinfo/network-parameters-initial.conf
             cp notary-nodeinfo/network-parameters-initial.conf {{ .Values.config.configPath }}/
 
-            echo "conf - $nmap.conf"
-            echo "para - notary-nodeinfo/network-parameters-initial.conf"
+            ini=$(cat notary-nodeinfo/network-parameters-initial.conf)
+            echo "conf - $nmap"
+            echo "para - $ini"
             echo "Setting initial network parameters ..."
             java -jar {{ .Values.config.jarPath }}/networkmap.jar \
               -f {{ .Values.config.configPath }}/nmap.conf \
