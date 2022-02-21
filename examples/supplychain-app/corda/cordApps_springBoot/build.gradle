@@ -220,7 +220,8 @@ publishing{
     }
     repositories {
         maven {
-            url project.repoURI
+            name "GitHubPackages"
+            url = project.findProperty("repoURI")
             credentials {
                 username project.repoUser
                 password project.repoPassword
