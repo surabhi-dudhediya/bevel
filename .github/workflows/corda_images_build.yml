@@ -60,7 +60,7 @@ jobs:
       run: |
         WDIR=`pwd`
         
-        cd /home/surabhi/bevel/examples/supplychain-app/corda/cordApps_springBoot
+        cd ${WDIR}/examples/supplychain-app/corda/cordApps_springBoot
         ./gradlew publish --stacktrace
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
