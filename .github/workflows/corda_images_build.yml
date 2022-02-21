@@ -42,7 +42,7 @@ env:
 
 jobs:
   publish:
-    if: ${{ startsWith(github.ref, 'refs/heads/develop') }}
+    # if: ${{ startsWith(github.ref, 'refs/heads/develop') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,7 +57,11 @@ jobs:
         java-version: '8'
 
     - name: Publish to Github Packages
-      run: ./gradlew publish --stacktrace
+      run: |
+        WDIR=`pwd`
+        
+        cd /home/surabhi/bevel/examples/supplychain-app/corda/cordApps_springBoot
+        ./gradlew publish --stacktrace
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_USER_NAME: ${{ github.actor }}
