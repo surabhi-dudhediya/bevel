@@ -61,6 +61,8 @@ jobs:
         WDIR=`pwd`
         
         cd ${WDIR}/examples/supplychain-app/corda/cordApps_springBoot
+        ./gradlew clean
+        ./gradlew build
         ./gradlew publish --stacktrace
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
